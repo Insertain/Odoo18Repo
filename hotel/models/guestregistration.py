@@ -23,6 +23,13 @@ class GuestRegistration(models.Model):
     # Computed field: concatenation of room name and guest name
     name = fields.Char("Guest Registration", compute='_compute_name', store=False)
 
+    state = fields.Selection([
+        ('RESERVED', 'Reserved'),
+        ('CHECKEDIN', 'Checked In'),
+        ('CHECKEDOUT', 'Checked Out'),
+        ('CANCELLED', 'Cancelled')
+    ], string='Status', default='RESERVED')
+
     @api.depends('roomname', 'guestname')
     def _compute_name(self):
         for rec in self:
